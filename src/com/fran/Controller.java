@@ -31,7 +31,7 @@ public class Controller {
             try {
                 System.out.println("Enter .PNG file name (inside maze directory, without extension): ");
                 name = scanner.nextLine();
-                f = new File("C:/Users/Fran/Desktop/mazeSolver/mazes/" + name + ".png");
+                f = new File("mazes/" + name + ".png");
                 img = ImageIO.read(f);
                 img = ImageUtils.convertToARGB(img);
             }
@@ -94,11 +94,11 @@ public class Controller {
             BufferedImage sol = algorithm.solve(graph);
             System.out.println("Saving image...");
             long init = System.currentTimeMillis();
-            File directory = new File("C:/Users/Fran/Desktop/mazeSolver/mazes/" + name + "sol/");
+            File directory = new File("mazes/" + name + "sol/");
             if (! directory.exists()){
                 directory.mkdir();
             }
-            File outputfile = new File("C:/Users/Fran/Desktop/mazeSolver/mazes/" + name + "sol/" + name + getAlgorithm(i) + "solution.png");
+            File outputfile = new File("mazes/" + name + "sol/" + name + getAlgorithm(i) + "solution.png");
             ImageIO.write(sol, "png", outputfile);
             System.out.println("Time elapsed: " + (System.currentTimeMillis() - init + "ms"));
         }
