@@ -29,7 +29,7 @@ public class Controller {
 
         while (img == null){
             try {
-                System.out.println("Enter file name (inside maze directory, without extension): ");
+                System.out.println("Enter .PNG file name (inside maze directory, without extension): ");
                 name = scanner.nextLine();
                 f = new File("C:/Users/Fran/Desktop/mazeSolver/mazes/" + name + ".png");
                 img = ImageIO.read(f);
