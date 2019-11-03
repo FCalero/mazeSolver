@@ -8,6 +8,7 @@ public class AlgorithmFactory {
             case 1 : return new Dfs();
             case 2 : return new Bfs();
             case 3 : return new Dijkstra();
+            case 4: return new Astar();
             default: return null;
         }
     }

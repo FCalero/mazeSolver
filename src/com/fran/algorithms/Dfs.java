@@ -2,12 +2,13 @@ package com.fran.algorithms;
 
 import com.fran.graph.*;
 
+import java.awt.image.*;
 import java.util.*;
 
 public class Dfs implements Algorithm {
 
     @Override
-    public void solve(Graph g) {
+    public BufferedImage solve(Graph g) {
 
         System.out.println("Solving maze...");
         long init = System.currentTimeMillis();
@@ -47,8 +48,9 @@ public class Dfs implements Algorithm {
         System.out.println("Time elapsed: " + (System.currentTimeMillis() - init) + "ms");
         System.out.println("Drawing path...");
         init = System.currentTimeMillis();
-        g.redraw(parent);
+        BufferedImage img = g.redraw(parent);
         System.out.println("Time elapsed: " + (System.currentTimeMillis() - init + "ms"));
+        return img;
 
     }
 }

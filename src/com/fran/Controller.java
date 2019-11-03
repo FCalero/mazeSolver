@@ -13,9 +13,10 @@ public class Controller {
 
     private Scanner scanner;
     private File f;
-    private BufferedImage img;
     private Algorithm algorithm;
     private Graph graph;
+    private int opt;
+    String name;
 
     public Controller(){
         scanner = new Scanner(System.in);
@@ -23,10 +24,13 @@ public class Controller {
 
     public void menu(){
 
+
+        BufferedImage img = null;
+
         while (img == null){
             try {
                 System.out.println("Enter file name (inside maze directory, without extension): ");
-                String name = scanner.nextLine();
+                name = scanner.nextLine();
                 f = new File("C:/Users/Fran/Desktop/mazeSolver/mazes/" + name + ".png");
                 img = ImageIO.read(f);
                 img = ImageUtils.convertToARGB(img);
@@ -36,7 +40,7 @@ public class Controller {
             }
         }
 
-        int opt = -1;
+        opt = -1;
 
         while (opt < 0 ){
             try {
@@ -44,12 +48,24 @@ public class Controller {
                 System.out.println("1- DFS");
                 System.out.println("2- BFS");
                 System.out.println("3- DIJKSTRA");
+                System.out.println("4- ASTAR");
+                System.out.println("5- ALL ALGORITHMS");
                 System.out.println("0- Exit");
 
                 opt = scanner.nextInt();
 
-                if(opt > 3) opt = -1;
-                else if(opt > 0) algorithm = AlgorithmFactory.getAlgorithm(opt);
+                if(opt > 5) opt = -1;
+                else if (opt == 5){
+                    graph = new Graph(img);
+                    for (int i = 1; i < 5; ++i)
+                    {
+                        executeAlgorithm(i);
+                    }
+                }
+                else if(opt > 0) {
+                    graph = new Graph(img);
+                    executeAlgorithm(opt);
+                }
             }
             catch (InputMismatchException e){
                 opt = -1;
@@ -57,14 +73,38 @@ public class Controller {
             }
         }
 
-        if (opt > 0)
-            executeAlgoritm();
 
     }
 
-    private void executeAlgoritm() {
-            graph = new Graph(img);
-            algorithm.solve(graph);
+    private String getAlgorithm(int i){
+        switch (i){
+            case 1: return "DFS";
+            case 2: return "BFS";
+            case 3: return "DIJKSTRA";
+            case 4: return "ASTAR";
+            default: return null;
+        }
+    }
+
+    private void executeAlgorithm(int i) {
+        try {
+            System.out.println("------------------------------ SOLVING " + name + " " + getAlgorithm(i) + " ------------------------------");
+            algorithm = AlgorithmFactory.getAlgorithm(i);
+
+            BufferedImage sol = algorithm.solve(graph);
+            System.out.println("Saving image...");
+            long init = System.currentTimeMillis();
+            File directory = new File("C:/Users/Fran/Desktop/mazeSolver/mazes/" + name + "sol/");
+            if (! directory.exists()){
+                directory.mkdir();
+            }
+            File outputfile = new File("C:/Users/Fran/Desktop/mazeSolver/mazes/" + name + "sol/" + name + getAlgorithm(i) + "solution.png");
+            ImageIO.write(sol, "png", outputfile);
+            System.out.println("Time elapsed: " + (System.currentTimeMillis() - init + "ms"));
+        }
+        catch (IOException e){
+                System.out.println(e.getMessage());
+        }
     }
 
 

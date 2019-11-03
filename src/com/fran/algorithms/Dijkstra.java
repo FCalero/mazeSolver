@@ -2,11 +2,12 @@ package com.fran.algorithms;
 
 import com.fran.graph.*;
 
+import java.awt.image.*;
 import java.util.*;
 
 public class Dijkstra implements Algorithm {
 
-    class queueElement implements Comparable{
+    private class queueElement implements Comparable{
 
         public int weight;
         public Node n;
@@ -24,7 +25,7 @@ public class Dijkstra implements Algorithm {
 
 
     @Override
-    public void solve(Graph g) {
+    public BufferedImage solve(Graph g) {
         System.out.println("Solving maze...");
         long init = System.currentTimeMillis();
 
@@ -48,6 +49,8 @@ public class Dijkstra implements Algorithm {
 
             if(qe.weight > dist[qe.n.getId()])
                 continue;
+            if(qe.n.getId() == g.getTarget().getId())
+                break;
 
             for (Edge e : qe.n.getAdjEdges())
             {
@@ -65,7 +68,8 @@ public class Dijkstra implements Algorithm {
         System.out.println("Time elapsed: " + (System.currentTimeMillis() - init) + "ms");
         System.out.println("Drawing path...");
         init = System.currentTimeMillis();
-        g.redraw(parent);
+        BufferedImage img = g.redraw(parent);
         System.out.println("Time elapsed: " + (System.currentTimeMillis() - init + "ms"));
+        return img;
     }
 }
